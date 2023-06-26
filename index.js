@@ -1,9 +1,9 @@
 const express = require("express");
 const morgan = require('morgan')
-const path = require("path");
-require("dotenv").config({
-  path: path.resolve(__dirname, "./config.env"),
-});
+// const path = require("path");
+// require("dotenv").config({
+//   path: path.resolve(__dirname, "./config.env"),
+// });
 const home = require("./routes/home");
 const login = require("./routes/login");
 const register = require("./routes/register");

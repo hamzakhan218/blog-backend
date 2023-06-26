@@ -3,10 +3,10 @@ const User = require("../Models/User");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const path = require("path");
-require("dotenv").config({
-    path: path.resolve(__dirname, "./config.env"),
-  });
+// const path = require("path");
+// require("dotenv").config({
+//     path: path.resolve(__dirname, "./config.env"),
+//   });
 
 
 
