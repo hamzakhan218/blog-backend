@@ -56,7 +56,7 @@ router.post("/register", async (req, res) => {
     const newUser = new User({ name, email, password: hashPassword });
 
     // const result = await newUser.save();
-    const result = await fetch(
+    const savingDoc = await fetch(
       "https://data.mongodb-api.com/app/data-hsnwi/endpoint/data/v1/action/insertOne",
       {
         method: "POST",
@@ -72,7 +72,8 @@ router.post("/register", async (req, res) => {
         }),
       }
     );
-    return res.status(201).json({ result });
+    const insertedID = await savingDoc.json();
+    return res.status(201).json({ insertedID });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
