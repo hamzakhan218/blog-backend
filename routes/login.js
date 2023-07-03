@@ -35,7 +35,7 @@ router.post("/login", async (req, res) => {
             email: email
         },
       }
-    const res = await fetch(
+    const response = await fetch(
           "https://data.mongodb-api.com/app/data-hsnwi/endpoint/data/v1/action/findOne",
           {
             method: "POST",
@@ -48,7 +48,7 @@ router.post("/login", async (req, res) => {
           }
         );
 
-          const data = await res.json();
+          const data = await response.json();
           const doesUserExists = data.document
     // const doesUserExists = await User.findOne({ email });
     if (!doesUserExists)
