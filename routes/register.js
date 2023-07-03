@@ -72,7 +72,7 @@ router.post("/register", async (req, res) => {
         }),
       }
     );
-    return res.status(201).json({ ...result });
+    return res.status(201).json({ result });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
