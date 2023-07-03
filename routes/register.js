@@ -28,19 +28,21 @@ router.post("/register", async (req, res) => {
       .json({ error: "Password must be at least 6 characters long." });
 
   try {
-    const doesUserAlreadyExists = await User.findOne({ email });
+    // const doesUserAlreadyExists = await User.findOne({ email });
 
-    if (doesUserAlreadyExists)
-      return res.status(400).json({ error: "User already exists" });
+    // if (doesUserAlreadyExists)
+    //   return res.status(400).json({ error: "User already exists" });
 
-    const hashPassword = await bcrypt.hash(req.body.password, 12);
-    const newUser = new User({ name, email, password: hashPassword });
+    // const hashPassword = await bcrypt.hash(req.body.password, 12);
+    // const newUser = new User({ name, email, password: hashPassword });
 
-    const result = await newUser.save();
+    // const result = await newUser.save();
 
-    result._doc.password = undefined;
+    // result._doc.password = undefined;
 
-    return res.status(201).json({ ...result._doc });
+    // return res.status(201).json({ ...result._doc });
+    return res.status(200).json("Hello from register");
+
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

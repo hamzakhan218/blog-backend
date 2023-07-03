@@ -27,26 +27,27 @@ router.post("/login", async (req, res) => {
       .json({ error: "Please enter a valid email address" });
 
   try {
-    const doesUserExists = await User.findOne({ email });
-    if (!doesUserExists)
-      return res.status(400).json({ error: "Invalid email or password" });
+    // const doesUserExists = await User.findOne({ email });
+    // if (!doesUserExists)
+    //   return res.status(400).json({ error: "Invalid email or password" });
 
-    const doesPasswordMatch = await bcrypt.compare(
-      password,
-      doesUserExists.password
-    );
+    // const doesPasswordMatch = await bcrypt.compare(
+    //   password,
+    //   doesUserExists.password
+    // );
 
-    if (!doesPasswordMatch)
-      return res.status(400).json({ error: "Invalid email or password" });
+    // if (!doesPasswordMatch)
+    //   return res.status(400).json({ error: "Invalid email or password" });
     
-      const payload = { _id: doesUserExists._id };
+    //   const payload = { _id: doesUserExists._id };
 
-      const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "1h",
-      });
+    //   const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    //     expiresIn: "1h",
+    //   });
 
-      const user = { ...doesUserExists._doc, password: undefined };
-      return res.status(200).json({ token, user });
+    //   const user = { ...doesUserExists._doc, password: undefined };
+    //   return res.status(200).json({ token, user });
+      return res.status(200).json("Hello from login");
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
