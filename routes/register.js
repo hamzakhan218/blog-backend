@@ -66,10 +66,7 @@ router.post("/register", async (req, res) => {
         },
         body: JSON.stringify(newUser)
     });
-
-    result._doc.password = undefined;
-
-    return res.status(201).json({ ...result._doc });
+    return res.status(201).json({ ...result });
 
   } catch (error) {
     return res.status(500).json({ error: error.message });
