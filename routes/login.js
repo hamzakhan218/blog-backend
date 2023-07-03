@@ -3,11 +3,6 @@ const User = require("../Models/User");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-// const path = require("path");
-// require("dotenv").config({
-//     path: path.resolve(__dirname, "./config.env"),
-//   });
-
 
 
 router.post("/login", async (req, res) => {
@@ -28,28 +23,28 @@ router.post("/login", async (req, res) => {
 
   try {
     const reqBody = {
-        dataSource: "Cluster0",
-        database: "myFirstDatabase",
-        collection: "users",
-        filter: {
-            email: email
-        },
-      }
+      dataSource: "Cluster0",
+      database: "myFirstDatabase",
+      collection: "users",
+      filter: {
+        email: email,
+      },
+    };
     const response = await fetch(
-          "https://data.mongodb-api.com/app/data-hsnwi/endpoint/data/v1/action/findOne",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              apiKey:
-                "ESm4aIVDOmymuXX1C651AhrEBhk1X4u8y7ApkMejzDl6fCx13a7GxzNePMQ9zN3B",
-            },
-            body: JSON.stringify(reqBody),
-          }
-        );
+      "https://data.mongodb-api.com/app/data-hsnwi/endpoint/data/v1/action/findOne",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apiKey:
+            process.env.DATA_API_KEY,
+        },
+        body: JSON.stringify(reqBody),
+      }
+    );
 
-          const data = await response.json();
-          const doesUserExists = data.document
+    const data = await response.json();
+    const doesUserExists = data.document;
     // const doesUserExists = await User.findOne({ email });
     if (!doesUserExists)
       return res.status(400).json({ error: "Invalid email or password" });
@@ -61,16 +56,15 @@ router.post("/login", async (req, res) => {
 
     if (!doesPasswordMatch)
       return res.status(400).json({ error: "Invalid email or password" });
-    
-      const payload = { _id: doesUserExists._id };
 
-      const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "1h",
-      });
+    const payload = { _id: doesUserExists._id };
 
-      const user = { ...doesUserExists._doc, password: undefined };
-      return res.status(200).json({ token, user });
-    //   return res.status(200).json("Hello from login");
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const user = { ...doesUserExists._doc, password: undefined };
+    return res.status(200).json({ token, user });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
