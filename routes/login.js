@@ -22,14 +22,6 @@ router.post("/login", async (req, res) => {
       .json({ error: "Please enter a valid email address" });
 
   try {
-    const reqBody = {
-      dataSource: "Cluster0",
-      database: "myFirstDatabase",
-      collection: "users",
-      filter: {
-        email: email,
-      },
-    };
     const response = await fetch(
       "https://data.mongodb-api.com/app/data-hsnwi/endpoint/data/v1/action/findOne",
       {
@@ -39,7 +31,14 @@ router.post("/login", async (req, res) => {
           apiKey:
             process.env.DATA_API_KEY,
         },
-        body: JSON.stringify(reqBody),
+        body: JSON.stringify({
+            dataSource: "Cluster0",
+            database: "myFirstDatabase",
+            collection: "users",
+            filter: {
+              email: email,
+            },
+          }),
       }
     );
 

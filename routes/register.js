@@ -29,14 +29,6 @@ router.post("/register", async (req, res) => {
 
   try {
     // const doesUserAlreadyExists = await User.findOne({ email });
-    const reqBody = {
-      dataSource: "Cluster0",
-      database: "myFirstDatabase",
-      collection: "users",
-      filter: {
-        email: email,
-      },
-    };
     const response = await fetch(
       "https://data.mongodb-api.com/app/data-hsnwi/endpoint/data/v1/action/findOne",
       {
@@ -46,7 +38,14 @@ router.post("/register", async (req, res) => {
           apiKey:
             process.env.DATA_API_KEY,
         },
-        body: JSON.stringify(reqBody),
+        body: JSON.stringify({
+            dataSource: "Cluster0",
+            database: "myFirstDatabase",
+            collection: "users",
+            filter: {
+              email: email,
+            },
+          }),
       }
     );
     const data = await response.json();
@@ -57,7 +56,16 @@ router.post("/register", async (req, res) => {
     const hashPassword = await bcrypt.hash(req.body.password, 12);
     const newUser = new User({ name, email, password: hashPassword });
 
-    const result = await newUser.save();
+    // const result = await newUser.save();
+    const result = await fetch( "https://data.mongodb-api.com/app/data-hsnwi/endpoint/data/v1/action/insertOne",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apiKey:
+            process.env.DATA_API_KEY,
+        },
+        body: JSON.stringify(newUser)
+    });
 
     result._doc.password = undefined;
 
