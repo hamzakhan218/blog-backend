@@ -35,17 +35,16 @@ router.post("/register", async (req, res) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          apiKey:
-            process.env.DATA_API_KEY,
+          apiKey: process.env.DATA_API_KEY,
         },
         body: JSON.stringify({
-            dataSource: "Cluster0",
-            database: "myFirstDatabase",
-            collection: "users",
-            filter: {
-              email: email,
-            },
-          }),
+          dataSource: "Cluster0",
+          database: "myFirstDatabase",
+          collection: "users",
+          filter: {
+            email: email,
+          },
+        }),
       }
     );
     const data = await response.json();
@@ -57,17 +56,23 @@ router.post("/register", async (req, res) => {
     const newUser = new User({ name, email, password: hashPassword });
 
     // const result = await newUser.save();
-    const result = await fetch( "https://data.mongodb-api.com/app/data-hsnwi/endpoint/data/v1/action/insertOne",{
+    const result = await fetch(
+      "https://data.mongodb-api.com/app/data-hsnwi/endpoint/data/v1/action/insertOne",
+      {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          apiKey:
-            process.env.DATA_API_KEY,
+          apiKey: process.env.DATA_API_KEY,
         },
-        body: JSON.stringify(newUser)
-    });
+        body: JSON.stringify({
+          dataSource: "Cluster0",
+          database: "myFirstDatabase",
+          collection: "users",
+          document: { name, email, password: hashPassword },
+        }),
+      }
+    );
     return res.status(201).json({ ...result });
-
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
