@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const User = require("../Models/User");
-
+// const path = require("path");
+// require("dotenv").config({
+//   path: path.resolve(__dirname, "./config.env"),
+// });
 router.post("/register", async (req, res) => {
   console.log(req.body);
   const { name, email, password } = req.body;
@@ -73,7 +76,7 @@ router.post("/register", async (req, res) => {
       }
     );
     const insertedID = await savingDoc.json();
-    return res.status(201).json( insertedID.insertedId );
+    return res.status(201).json(insertedID.insertedId);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

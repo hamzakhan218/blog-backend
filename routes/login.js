@@ -3,7 +3,10 @@ const User = require("../Models/User");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-
+// const path = require("path");
+// require("dotenv").config({
+//   path: path.resolve(__dirname, "./config.env"),
+// });
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -28,17 +31,16 @@ router.post("/login", async (req, res) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          apiKey:
-            process.env.DATA_API_KEY,
+          apiKey: process.env.DATA_API_KEY,
         },
         body: JSON.stringify({
-            dataSource: "Cluster0",
-            database: "myFirstDatabase",
-            collection: "users",
-            filter: {
-              email: email,
-            },
-          }),
+          dataSource: "Cluster0",
+          database: "myFirstDatabase",
+          collection: "users",
+          filter: {
+            email: email,
+          },
+        }),
       }
     );
 
@@ -62,7 +64,7 @@ router.post("/login", async (req, res) => {
       expiresIn: "1h",
     });
 
-    const user = { ...doesUserExists._doc, password: undefined };
+    const user = { ...doesUserExists, password: undefined };
     return res.status(200).json({ token, user });
   } catch (error) {
     return res.status(500).json({ error: error.message });
